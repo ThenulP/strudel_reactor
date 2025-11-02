@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useStrudelEditor } from "./useStrudelEditor";
+import { useStrudelEditor } from "./UseStrudelEditor";
 import ControlButtons from "./ControlButtons";
 import RadioControls from "./RadioControls";
 import Preprocessor from "./Preprocessor";
