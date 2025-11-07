@@ -23,8 +23,21 @@ export default function StrudelDemo() {
         editor.setCode(replaced);
     };
 
+    const downloadTextFile = (text, filename = "strudel_code.txt") => {
+        const blob = new Blob([text], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        link.click();
+
+        URL.revokeObjectURL(url);
+    };
+
     const handlePlay = () => editor?.evaluate();
     const handleStop = () => editor?.stop();
+    const handleSave = () => downloadTextFile(procText, "strudel_code.txt");
     const handleProcAndPlay = () => {
         handleProcess();
         handlePlay();
@@ -49,6 +62,7 @@ export default function StrudelDemo() {
                             onProcAndPlay={handleProcAndPlay}
                             onPlay={handlePlay}
                             onStop={handleStop}
+                            onSave={handleSave}
                         />
                     </div>
                 </div>
