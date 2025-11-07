@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState,useRef, useEffect } from "react";
 import { useStrudelEditor } from "./UseStrudelEditor";
 import ControlButtons from "./ControlButtons";
 import RadioControls from "./RadioControls";
@@ -11,6 +11,9 @@ export default function StrudelDemo() {
     const editor = useStrudelEditor("roll", "editor");
     const [procText, setProcText] = useState(stranger_tune);
     const [radio, setRadio] = useState("on");
+    const fileInputRef = useRef(null);
+
+    
 
     const processText = (text) => {
         const replacement = radio === "hush" ? "_" : "";
@@ -35,11 +38,17 @@ export default function StrudelDemo() {
         URL.revokeObjectURL(url);
     };
 
+    const handleLoadClick = () => {
+        fileInputRef.current.click();
+
+    };
+
     const handleFileLoad = (event) => {
         const file = event.target.files[0];
         if (!file) return;
 
         const reader = new FileReader();
+
         reader.onload = (e) => {
             const text = e.target.result;
             setProcText(text);
@@ -47,8 +56,12 @@ export default function StrudelDemo() {
                 const replaced = processText(text);
                 editor.setCode(replaced);
             }
+
+            
         };
-        setProcText(reader.readAsText(file));
+
+        reader.readAsText(file); 
+  
     };
 
     const handlePlay = () => editor?.evaluate();
@@ -79,7 +92,16 @@ export default function StrudelDemo() {
                             onPlay={handlePlay}
                             onStop={handleStop}
                             onSave={handleSave}
-                            onLoad={handleFileLoad}
+                            onLoad={handleLoadClick}
+
+                        />
+
+                        <input
+                            type="file"
+                            accept=".txt"
+                            ref={fileInputRef}
+                            onChange={handleFileLoad}
+                            style={{ display: "none" }}
                         />
                     </div>
                 </div>
