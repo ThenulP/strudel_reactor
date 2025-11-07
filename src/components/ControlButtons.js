@@ -1,4 +1,4 @@
-export default function ControlButtons({ onProcess, onProcAndPlay, onPlay, onStop, onSave }) {
+export default function ControlButtons({ onProcess, onProcAndPlay, onPlay, onStop, onSave, onLoad }) {
     return (
         <div className="d-flex flex-column gap-2">
             <div className="d-flex gap-2">
@@ -21,7 +21,7 @@ export default function ControlButtons({ onProcess, onProcAndPlay, onPlay, onSto
                 <button onClick={onSave} className="btn btn-outline-secondary flex-fill">
                     Save Preprocess
                 </button>
-                <button  className="btn btn-outline-secondary flex-fill">
+                <button onClick={onLoad} type="file" accept=".txt" className="btn btn-outline-secondary flex-fill">
                     Load Preprocess
                 </button>
             </div>

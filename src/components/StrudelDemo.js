@@ -35,6 +35,22 @@ export default function StrudelDemo() {
         URL.revokeObjectURL(url);
     };
 
+    const handleFileLoad = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const text = e.target.result;
+            setProcText(text);
+            if (editor) {
+                const replaced = processText(text);
+                editor.setCode(replaced);
+            }
+        };
+        setProcText(reader.readAsText(file));
+    };
+
     const handlePlay = () => editor?.evaluate();
     const handleStop = () => editor?.stop();
     const handleSave = () => downloadTextFile(procText, "strudel_code.txt");
@@ -63,6 +79,7 @@ export default function StrudelDemo() {
                             onPlay={handlePlay}
                             onStop={handleStop}
                             onSave={handleSave}
+                            onLoad={handleFileLoad}
                         />
                     </div>
                 </div>
