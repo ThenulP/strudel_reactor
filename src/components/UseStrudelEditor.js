@@ -28,7 +28,12 @@ export function useStrudelEditor(canvasId, editorId) {
             transpiler,
             root: document.getElementById(editorId),
             drawTime,
-            onDraw: (haps, time) => drawPianoroll({ haps, time, ctx, drawTime, fold: 0 }),
+            onDraw: (haps, time) => {
+                drawPianoroll({ haps, time, ctx, drawTime, fold: 0 })
+                ctx.textAlign = "left";
+
+
+            },
             prebake: async () => {
                 initAudioOnFirstClick();
                 const loadModules = evalScope(
