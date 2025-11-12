@@ -1,4 +1,19 @@
-export default function Preprocessor({ value, onChange }) {
+
+import { useState } from "react";
+
+export default function Preprocessor({ editor, text }) {
+    
+    const [procText, setProcText] = useState(text);
+
+    const processText = (e) => {
+        if (!editor) return;
+        setProcText(e.target.value)
+        const replaced = procText;
+        editor.setCode(replaced);
+
+    };
+
+
     return (
         <div>
             <label htmlFor="proc" className="form-label">Text to preprocess:</label>
@@ -6,8 +21,8 @@ export default function Preprocessor({ value, onChange }) {
                 className="form-control"
                 id="proc"
                 rows="15"
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
+                value={procText}
+                onChange={(e) => processText(e)}
             />
         </div>
     );

@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-export default function RadioControls({ value, onChange }) {
+export default function RadioControls({ value, onChange, name }) {
 
     const [isChecked, setIsChecked] = useState(value === "on"); 
 
@@ -49,7 +49,7 @@ export default function RadioControls({ value, onChange }) {
                 className="form-check-input"
                 type="checkbox"
                 role="switch"
-                id="p1Switch"
+                id="radioSwitch"
                 name="p1"
                 checked={isChecked}
                 onChange={handleChange}
@@ -57,9 +57,9 @@ export default function RadioControls({ value, onChange }) {
 
             <label
                 className="form-check-label"
-                id="p1Label"
-                htmlFor="p1Switch">
-                {isChecked ? "p1 ON" : "p1 OFF"}
+                id="radioLabel"
+                htmlFor="radioSwitch">
+                {isChecked ? { name } + " ON" : { name }+" OFF"}
             </label>
         </div>
     );

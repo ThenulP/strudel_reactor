@@ -1,21 +1,22 @@
 import { useState,useRef, useEffect } from "react";
 import { useStrudelEditor } from "./UseStrudelEditor";
-import ControlButtons from "./ControlButtons";
+import ControlButtons from "./controlButtons/ControlButtons";
 import RadioControls from "./RadioControls";
 import Preprocessor from "./Preprocessor";
 import PianoRollCanvas from "./PianoRollCanvas";
 import Editor from "./Editor";
+import ProcAndPlay from "./controlButtons/ProcAndPlayBtn";
 import { stranger_tune } from "../tunes";
 
 export default function StrudelDemo() {
     const editor = useStrudelEditor("roll", "editor");
     const [procText, setProcText] = useState(stranger_tune);
     const [radio, setRadio] = useState("on");
-    const fileInputRef = useRef(null);
+    
 
     
 
-    const processText = (text) => {
+    /*const processText = (text) => {
         const replacement = radio === "hush" ? "_" : "";
         return text.replaceAll("<p1_Radio>", replacement);
     };
@@ -70,11 +71,16 @@ export default function StrudelDemo() {
     const handleProcAndPlay = () => {
         handleProcess();
         handlePlay();
-    };
+    };*/
 
     // Whenever radio changes, automatically re-process + play
     useEffect(() => {
-        if (editor) handleProcAndPlay();
+        if (editor) {
+            const replacement = radio === "hush" ? "_" : "";
+            procText.replaceAll("<p1_Radio>", replacement);
+
+            ProcAndPlay.handleProcAndPlay(editor, procText);
+        }
     }, [radio]);
 
     return (
@@ -83,26 +89,10 @@ export default function StrudelDemo() {
             <main className="container-fluid">
                 <div className="row">
                     <div className="col-md-8">
-                        <Preprocessor value={procText} onChange={setProcText} />
+                        <Preprocessor editor={editor} text={procText} />
                     </div>
                     <div className="col-md-4">
-                        <ControlButtons
-                            onProcess={handleProcess}
-                            onProcAndPlay={handleProcAndPlay}
-                            onPlay={handlePlay}
-                            onStop={handleStop}
-                            onSave={handleSave}
-                            onLoad={handleLoadClick}
-
-                        />
-
-                        <input
-                            type="file"
-                            accept=".txt"
-                            ref={fileInputRef}
-                            onChange={handleFileLoad}
-                            style={{ display: "none" }}
-                        />
+                        <ControlButtons editor={editor} text={procText} />
                     </div>
                 </div>
                 <div className="row">
@@ -110,7 +100,7 @@ export default function StrudelDemo() {
                         <Editor />
                     </div>
                     <div className="col-md-4">
-                        <RadioControls value={radio} onChange={setRadio} />
+                        <RadioControls value={radio} onChange={setRadio} name="p1" />
                     </div>
                 </div>
                 <PianoRollCanvas />
