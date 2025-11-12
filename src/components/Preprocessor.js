@@ -1,9 +1,9 @@
 
 import { useState } from "react";
-
-export default function Preprocessor({ editor, text }) {
+import { stranger_tune } from "../tunes";
+export default function Preprocessor({ editor }) {
     
-    const [procText, setProcText] = useState(text);
+    const [procText, setProcText] = useState(stranger_tune);
 
     const processText = (e) => {
         if (!editor) return;
@@ -13,6 +13,21 @@ export default function Preprocessor({ editor, text }) {
 
     };
 
+    const setText = (text) => {
+        setProcText(text);
+    }
+
+    const getText = () => {
+        return procText;
+    }
+
+    const updateEditor = (text) => {
+        if (editor) {
+            setText(text);
+            const replaced = processText(text);
+            editor.setCode(replaced);
+        }
+    }
 
     return (
         <div>

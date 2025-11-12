@@ -1,11 +1,9 @@
-import  ControlButton  from "../../componentTemplates/ControlButton";
+import ControlButton from "../../componentTemplates/ControlButton";
 
-const PreprocessBtn = ({ editor, text }) => {
+const PreprocessBtn = ({ preprocess }) => {
 
-    const handleProcess = (inputText = text, inputEditor = editor) => {
-        if (!inputEditor) return;
-        const replaced = inputText;
-        inputEditor.setCode(replaced);
+    const handleProcess = () => {
+        preprocess.preprocessText();
     };
 
     return (

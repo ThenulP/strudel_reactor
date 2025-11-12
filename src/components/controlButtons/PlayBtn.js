@@ -1,4 +1,4 @@
-import  ControlButton from "../../componentTemplates/ControlButton";
+import ControlButton from "../../componentTemplates/ControlButton";
 
 const PlayBtn = ({ editor }) => {
     const handlePlay = (input = editor) => input?.evaluate();

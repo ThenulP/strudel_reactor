@@ -11,7 +11,7 @@ console.log('PreprocessBtn:', PreprocessBtn);
 console.log('ProcAndPlayBtn:', ProcAndPlayBtn);
 console.log('LoadFileBtn:', LoadFileBtn);
 console.log('SaveFileBtn:', SaveFileBtn);
-export default function ControlButtons({ editor, text }) {
+export default function ControlButtons({ editor, preprocess }) {
 
     return (
         //<div className="d-flex flex-column gap-2">
@@ -45,16 +45,16 @@ export default function ControlButtons({ editor, text }) {
 
         <div className="d-flex flex-column gap-2">
             <div className="d-flex gap-2">
-                <PreprocessBtn editor={editor} text={text} />
-                <ProcAndPlayBtn editor={editor} text={text} />
+                <PreprocessBtn preprocess={preprocess} />
+                <ProcAndPlayBtn editor={editor} preprocess={preprocess} />
             </div>
             <div className="d-flex gap-2">
                 <PlayBtn editor={editor} />
                 <StopBtn editor={editor} />
             </div>
             <div className="d-flex gap-2">
-                <SaveFileBtn text={text} />
-                <LoadFileBtn text={text} />
+                <SaveFileBtn preprocess={preprocess} />
+                <LoadFileBtn preprocess={preprocess} />
             </div>
         </div>
     );

@@ -1,11 +1,10 @@
 import  ControlButton  from "../../componentTemplates/ControlButton";
-import  Preprocess  from "../Preprocessor";
 import  PlayBtn  from "./PlayBtn";
 
-const ProcAndPlayBtn = ({ editor, text }) => {
+const ProcAndPlayBtn = ({ editor, preprocess }) => {
 
     const handleProcAndPlay = () => {
-        Preprocess.processText(text, editor);
+        preprocess.processText();
         PlayBtn.handlePlay(editor);
     };
 

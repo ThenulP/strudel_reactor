@@ -1,8 +1,7 @@
 import  ControlButton  from "../../componentTemplates/ControlButton";
-import  Preprocess  from "../Preprocessor";
 import { useRef, useState } from "react";
 
-const LoadFileBtn = ({ editor }) => {
+const LoadFileBtn = ({ preprocess }) => {
 
     const [procText, setProcText] = useState('');
 
@@ -22,10 +21,7 @@ const LoadFileBtn = ({ editor }) => {
         reader.onload = (e) => {
             const text = e.target.result;
             setProcText(text);
-            if (editor) {
-                const replaced = Preprocess.processText(procText);
-                editor.setCode(replaced);
-            }
+            preprocess.updateEditor(procText);
 
 
         };

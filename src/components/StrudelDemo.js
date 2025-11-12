@@ -1,16 +1,15 @@
 import { useState,useRef, useEffect } from "react";
 import { useStrudelEditor } from "./UseStrudelEditor";
 import ControlButtons from "./controlButtons/ControlButtons";
-import RadioControls from "./RadioControls";
+import RadioControls from "./instrumentControls/RadioControls";
 import Preprocessor from "./Preprocessor";
 import PianoRollCanvas from "./PianoRollCanvas";
 import Editor from "./Editor";
-import ProcAndPlay from "./controlButtons/ProcAndPlayBtn";
-import { stranger_tune } from "../tunes";
+
+
 
 export default function StrudelDemo() {
     const editor = useStrudelEditor("roll", "editor");
-    const [procText, setProcText] = useState(stranger_tune);
     const [radio, setRadio] = useState("on");
     
 
@@ -89,10 +88,10 @@ export default function StrudelDemo() {
             <main className="container-fluid">
                 <div className="row">
                     <div className="col-md-8">
-                        <Preprocessor editor={editor} text={procText} />
+                        <Preprocessor editor={editor} />
                     </div>
                     <div className="col-md-4">
-                        <ControlButtons editor={editor} text={procText} />
+                        <ControlButtons editor={editor} preprocess={Preprocessor} />
                     </div>
                 </div>
                 <div className="row">

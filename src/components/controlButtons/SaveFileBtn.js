@@ -1,8 +1,13 @@
 import  ControlButton  from "../../componentTemplates/ControlButton";
+import { useState } from "react";
 
-const LoadFileBtn = ({ text }) => {
+const LoadFileBtn = ({ preprocess }) => {
+
+    const [procText, setProcText] = useState('');
+
     const downloadTextFile = () => {
-        const blob = new Blob([text], { type: "text/plain" });
+        setProcText(preprocess.getText());
+        const blob = new Blob([procText], { type: "text/plain" });
         const url = URL.createObjectURL(blob);
 
         const link = document.createElement("a");
