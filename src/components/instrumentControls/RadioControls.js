@@ -2,71 +2,30 @@ import { usePreprocessor } from "../preprocessor/usePreprocessor";
 import { useState, useEffect } from "react";
 export default function RadioControls({ editor, name }) {
     const preprocess = usePreprocessor(editor);
-    const [radio, setRadio] = useState("on");
-    const [checked, setChecked] = useState(radio === "on");
+    const [checked, setChecked] = useState(true);
     const [procText, setProcText] = useState('');
 
     const handleToggle = () => {
         const newChecked = !checked;
         setChecked(newChecked);
-        setRadio(newChecked ? "on" : "hush");
     };
 
     useEffect(() => {
-        setProcText(preprocess.procText);
-        if (editor) {
-            var symbol = "";
-            if (checked) {
-                setChecked(false);
-                setRadio("hush")
-                symbol = "_";
-            } else {
-                setChecked(true);
-                setRadio("on")
-                symbol = "";
-            }
-
-            const replacement = symbol;
-
-
-            procText.replaceAll("<p1_Radio>", replacement);
-
-            preprocess.updateEditor(procText);
+        if (preprocess?.procText) {
+            setProcText(preprocess.procText);
         }
-    }, [radio,editor,preprocess]);
+    }, [preprocess?.procText]);
 
-    //return (
-    //    <div>
-    //        <div className="form-check">
-    //            <input
-    //                className="form-check-input"
-    //                type="radio"
-    //                name="p1"
-    //                value="on"
-    //                id="flexRadioDefault1"
-    //                checked={value === "on"}
-    //                onChange={() => onChange("on")}
-    //            />
-    //            <label className="form-check-label" htmlFor="flexRadioDefault1">
-    //                p1: ON
-    //            </label>
-    //        </div>
-    //        <div className="form-check">
-    //            <input
-    //                className="form-check-input"
-    //                type="radio"
-    //                name="p1"
-    //                value="hush"
-    //                id="flexRadioDefault2"
-    //                checked={value === "hush"}
-    //                onChange={() => onChange("hush")}
-    //            />
-    //            <label className="form-check-label" htmlFor="flexRadioDefault2">
-    //                p1: HUSH
-    //            </label>
-    //        </div>
-    //    </div>
-    //);
+    useEffect(() => {
+        if (editor && preprocess?.updateEditor) {
+            const symbol = checked ? "" : "_";
+            const newText = procText.replaceAll("<p1_Radio>", symbol);
+            preprocess.updateEditor(newText);
+            editor?.evaluate();
+        }
+    }, [checked, editor,preprocess, preprocess?.updateEditor, procText]);
+
+
 
     return (
         <div className="form-check form-switch">
@@ -74,8 +33,8 @@ export default function RadioControls({ editor, name }) {
                 className="form-check-input"
                 type="checkbox"
                 role="switch"
-                id="radioSwitch"
-                name="p1"
+                id={`p1${name}`}
+                name={`p1${name}`}
                 value={checked}
                 onChange={handleToggle}
                 />
@@ -83,8 +42,8 @@ export default function RadioControls({ editor, name }) {
             <label
                 className="form-check-label"
                 id="radioLabel"
-                htmlFor="radioSwitch">
-                {checked ? { name } + " ON" : {name} +  " OFF"}
+                htmlFor={`p1${name}`}>
+                {checked ? `${name} ON` : `${name} OFF`}
             </label>
         </div>
     );
