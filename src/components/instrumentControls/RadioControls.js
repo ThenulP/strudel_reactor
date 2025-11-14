@@ -1,14 +1,39 @@
 
-import { useState } from "react";
-export default function RadioControls({ value, onChange, name }) {
+import { useState, useEffect } from "react";
+export default function RadioControls({ editor, preprocess, name }) {
 
-    const [isChecked, setIsChecked] = useState(value === "on"); 
+    const [radio, setRadio] = useState("on");
+    const [checked, setChecked] = useState(radio === "on");
+    const [procText, setProcText] = useState('');
 
-    const handleChange = () => {
-        const newChecked = !isChecked;
-        setIsChecked(newChecked);
-        onChange(newChecked ? "on" : "hush");
+    const handleToggle = () => {
+        const newChecked = !checked;
+        setChecked(newChecked);
+        setRadio(newChecked ? "on" : "hush");
     };
+
+    useEffect(() => {
+        setProcText(preprocess.getText());
+        if (editor) {
+            var symbol = "";
+            if (checked) {
+                setChecked(false);
+                setRadio("hush")
+                symbol = "_";
+            } else {
+                setChecked(true);
+                setRadio("on")
+                symbol = "";
+            }
+
+            const replacement = symbol;
+
+
+            procText.replaceAll("<p1_Radio>", replacement);
+
+            preprocess.updateEditor(procText);
+        }
+    }, [radio,editor,preprocess]);
 
     //return (
     //    <div>
@@ -51,15 +76,15 @@ export default function RadioControls({ value, onChange, name }) {
                 role="switch"
                 id="radioSwitch"
                 name="p1"
-                checked={isChecked}
-                onChange={handleChange}
+                value={checked}
+                onChange={handleToggle}
                 />
 
             <label
                 className="form-check-label"
                 id="radioLabel"
                 htmlFor="radioSwitch">
-                {isChecked ? { name } + " ON" : { name }+" OFF"}
+                {checked ? { name } + " ON" : {name} +  " OFF"}
             </label>
         </div>
     );

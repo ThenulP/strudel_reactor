@@ -1,4 +1,4 @@
-import { useState,useRef, useEffect } from "react";
+
 import { useStrudelEditor } from "./UseStrudelEditor";
 import ControlButtons from "./controlButtons/ControlButtons";
 import RadioControls from "./instrumentControls/RadioControls";
@@ -10,7 +10,7 @@ import Editor from "./Editor";
 
 export default function StrudelDemo() {
     const editor = useStrudelEditor("roll", "editor");
-    const [radio, setRadio] = useState("on");
+    
     
 
     
@@ -72,16 +72,6 @@ export default function StrudelDemo() {
         handlePlay();
     };*/
 
-    // Whenever radio changes, automatically re-process + play
-    useEffect(() => {
-        if (editor) {
-            const replacement = radio === "hush" ? "_" : "";
-            procText.replaceAll("<p1_Radio>", replacement);
-
-            ProcAndPlay.handleProcAndPlay(editor, procText);
-        }
-    }, [radio]);
-
     return (
         <div>
             <h2>Strudel Demo</h2>
@@ -99,7 +89,7 @@ export default function StrudelDemo() {
                         <Editor />
                     </div>
                     <div className="col-md-4">
-                        <RadioControls value={radio} onChange={setRadio} name="p1" />
+                        <RadioControls editor={editor} preprocess={Preprocessor} name="p1" />
                     </div>
                 </div>
                 <PianoRollCanvas />
