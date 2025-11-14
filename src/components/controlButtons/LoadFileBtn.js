@@ -1,10 +1,11 @@
-import  ControlButton  from "../../componentTemplates/ControlButton";
+import ControlButton from "../../componentTemplates/ControlButton";
+import { usePreprocessor } from "../preprocessor/usePreprocessor";
 import { useRef, useState } from "react";
 
-const LoadFileBtn = ({ preprocess }) => {
+const LoadFileBtn = ({ editor }) => {
 
     const [procText, setProcText] = useState('');
-
+    const preprocess = usePreprocessor(editor); 
     const fileInputRef = useRef(null);
 
     const handleLoadClick = () => {

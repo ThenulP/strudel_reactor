@@ -2,7 +2,8 @@
 import { useStrudelEditor } from "./UseStrudelEditor";
 import ControlButtons from "./controlButtons/ControlButtons";
 import RadioControls from "./instrumentControls/RadioControls";
-import Preprocessor from "./Preprocessor";
+import Preprocessor from "./preprocessor/Preprocessor";
+import { usePreprocessor } from "./preprocessor/usePreprocessor";
 import PianoRollCanvas from "./PianoRollCanvas";
 import Editor from "./Editor";
 
@@ -10,6 +11,7 @@ import Editor from "./Editor";
 
 export default function StrudelDemo() {
     const editor = useStrudelEditor("roll", "editor");
+    const pre = usePreprocessor(editor);
     
     
 
@@ -81,7 +83,7 @@ export default function StrudelDemo() {
                         <Preprocessor editor={editor} />
                     </div>
                     <div className="col-md-4">
-                        <ControlButtons editor={editor} preprocess={Preprocessor} />
+                        <ControlButtons editor={editor} />
                     </div>
                 </div>
                 <div className="row">
@@ -89,7 +91,7 @@ export default function StrudelDemo() {
                         <Editor />
                     </div>
                     <div className="col-md-4">
-                        <RadioControls editor={editor} preprocess={Preprocessor} name="p1" />
+                        <RadioControls editor={editor} name="p1" />
                     </div>
                 </div>
                 <PianoRollCanvas />

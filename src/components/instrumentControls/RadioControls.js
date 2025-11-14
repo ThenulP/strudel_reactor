@@ -1,7 +1,7 @@
-
+import { usePreprocessor } from "../preprocessor/usePreprocessor";
 import { useState, useEffect } from "react";
-export default function RadioControls({ editor, preprocess, name }) {
-
+export default function RadioControls({ editor, name }) {
+    const preprocess = usePreprocessor(editor);
     const [radio, setRadio] = useState("on");
     const [checked, setChecked] = useState(radio === "on");
     const [procText, setProcText] = useState('');
@@ -13,7 +13,7 @@ export default function RadioControls({ editor, preprocess, name }) {
     };
 
     useEffect(() => {
-        setProcText(preprocess.getText());
+        setProcText(preprocess.procText);
         if (editor) {
             var symbol = "";
             if (checked) {
