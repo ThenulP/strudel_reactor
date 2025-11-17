@@ -1,7 +1,10 @@
 import ControlButton from "../../componentTemplates/ControlButton";
 
 const PlayBtn = ({ editor }) => {
-    const handlePlay = (input = editor) => input?.evaluate();
+    const handlePlay = () => {
+        console.log("play");
+        editor?.evaluate();
+    }
 
     return (
         <ControlButton

@@ -1,3 +1,3 @@
-export default function Editor() {
-    return <div id="editor" />;
+export default function Editor({ ref}) {
+    return <div id="editor" ref={ref} />;
 }

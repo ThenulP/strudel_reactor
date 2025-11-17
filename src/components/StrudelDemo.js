@@ -1,19 +1,20 @@
-
+import { useRef } from "react";
 import { useStrudelEditor } from "./UseStrudelEditor";
 import ControlButtons from "./controlButtons/ControlButtons";
 import RadioControls from "./instrumentControls/RadioControls";
-import Preprocessor from "./preprocessor/Preprocessor";
-import { usePreprocessor } from "./preprocessor/usePreprocessor";
+import TextArea from "./preprocessor/TextArea";
 import PianoRollCanvas from "./PianoRollCanvas";
 import Editor from "./Editor";
 
 
 
+
 export default function StrudelDemo() {
-    const editor = useStrudelEditor("roll", "editor");
-    const pre = usePreprocessor(editor);
-    
-    
+    const canvasRef = useRef(null);
+    const editorRef = useRef(null);
+
+    const { editor, code, setCode } = useStrudelEditor(canvasRef, editorRef);
+
 
     
 
@@ -80,21 +81,21 @@ export default function StrudelDemo() {
             <main className="container-fluid">
                 <div className="row">
                     <div className="col-md-8">
-                        <Preprocessor editor={editor} />
+                        <TextArea code={code} setCode={setCode} />
                     </div>
                     <div className="col-md-4">
-                        <ControlButtons editor={editor} />
+                        <ControlButtons editor={editor} code={code} setCode={setCode} />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-8">
-                        <Editor />
+                        <Editor ref={editorRef} />
                     </div>
                     <div className="col-md-4">
-                        <RadioControls editor={editor} name="p1" />
+                        <RadioControls editor={editor} code={code} setCode={setCode} name="p1" />
                     </div>
                 </div>
-                <PianoRollCanvas />
+                <PianoRollCanvas ref={ canvasRef} />
             </main>
         </div>
     );

@@ -1,11 +1,11 @@
 import ControlButton from "../../componentTemplates/ControlButton";
-import { usePreprocessor } from "../preprocessor/usePreprocessor";
+//import { usePreprocessor } from "../preprocessor/usePreprocessor";
 import { useRef, useState } from "react";
 
-const LoadFileBtn = ({ editor }) => {
+const LoadFileBtn = ({ setCode }) => {
 
     const [procText, setProcText] = useState('');
-    const preprocess = usePreprocessor(editor); 
+    //const preprocess = usePreprocessor(editor); 
     const fileInputRef = useRef(null);
 
     const handleLoadClick = () => {
@@ -22,7 +22,7 @@ const LoadFileBtn = ({ editor }) => {
         reader.onload = (e) => {
             const text = e.target.result;
             setProcText(text);
-            preprocess.updateEditor(procText);
+            setCode(procText);
 
 
         };

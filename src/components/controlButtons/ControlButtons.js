@@ -11,50 +11,23 @@ console.log('PreprocessBtn:', PreprocessBtn);
 console.log('ProcAndPlayBtn:', ProcAndPlayBtn);
 console.log('LoadFileBtn:', LoadFileBtn);
 console.log('SaveFileBtn:', SaveFileBtn);
-export default function ControlButtons({ editor }) {
+export default function ControlButtons({ editor, code, setCode }) {
 
     return (
-        //<div className="d-flex flex-column gap-2">
-        //    <div className="d-flex gap-2">
-        //        <button onClick={onProcess} className="btn btn-outline-primary flex-fill">
-        //            Preprocess
-        //        </button>
-        //        <button onClick={onProcAndPlay} className="btn btn-outline-primary flex-fill">
-        //            Proc & Play
-        //        </button>
-        //    </div>
-        //    <div className="d-flex gap-2">
-        //        <button onClick={onPlay} className="btn btn-outline-success flex-fill">
-        //            Play
-        //        </button>
-        //        <button onClick={onStop} className="btn btn-outline-danger flex-fill">
-        //            Stop
-        //        </button>
-        //    </div>
-        //    <div className="d-flex gap-2">
-        //        <button onClick={onSave} className="btn btn-outline-secondary flex-fill">
-        //            Save Preprocess
-        //        </button>
-        //        <button onClick={onLoad} className="btn btn-outline-secondary flex-fill">
-        //            Load Preprocess
-        //        </button>
 
-
-        //    </div>
-        //</div>
 
         <div className="d-flex flex-column gap-2">
             <div className="d-flex gap-2">
-                <PreprocessBtn editor={editor} />
-                <ProcAndPlayBtn editor={editor} />
+                <PreprocessBtn code={code} setCode={setCode} />
+                <ProcAndPlayBtn code={code} setCode={setCode} />
             </div>
             <div className="d-flex gap-2">
                 <PlayBtn editor={editor} />
                 <StopBtn editor={editor} />
             </div>
             <div className="d-flex gap-2">
-                <SaveFileBtn editor={editor} />
-                <LoadFileBtn editor={editor} />
+                <SaveFileBtn code={code} />
+                <LoadFileBtn setCode={setCode} />
             </div>
         </div>
     );

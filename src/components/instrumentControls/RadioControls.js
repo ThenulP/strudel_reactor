@@ -1,9 +1,8 @@
-import { usePreprocessor } from "../preprocessor/usePreprocessor";
+
 import { useState, useEffect } from "react";
-export default function RadioControls({ editor, name }) {
-    const preprocess = usePreprocessor(editor);
+export default function RadioControls({ code, setCode, editor, name }) {
     const [checked, setChecked] = useState(true);
-    const [procText, setProcText] = useState('');
+    const [localText, setLocalText] = useState('');
 
     const handleToggle = () => {
         const newChecked = !checked;
@@ -11,20 +10,21 @@ export default function RadioControls({ editor, name }) {
     };
 
     useEffect(() => {
-        if (preprocess?.procText) {
-            setProcText(preprocess.procText);
+        if (code !== undefined && code !== null) {
+            setLocalText(code);
         }
-    }, [preprocess?.procText]);
+    }, [code]);
 
     useEffect(() => {
-        if (editor && preprocess?.updateEditor) {
-            const symbol = checked ? "" : "_";
-            const newText = procText.replaceAll("<p1_Radio>", symbol);
-            preprocess.updateEditor(newText);
-            editor?.evaluate();
-        }
-    }, [checked, editor,preprocess, preprocess?.updateEditor, procText]);
+        if (!editor) return;
+        if (!localText) return;
 
+        const symbol = checked ? "" : "_";
+        const newText = localText.replaceAll("<p1_Radio>", symbol);
+
+        setCode(newText);      
+        editor?.evaluate();    
+    }, [checked, localText, setCode, editor]);
 
 
     return (
@@ -41,7 +41,6 @@ export default function RadioControls({ editor, name }) {
 
             <label
                 className="form-check-label"
-                id="radioLabel"
                 htmlFor={`p1${name}`}>
                 {checked ? `${name} ON` : `${name} OFF`}
             </label>

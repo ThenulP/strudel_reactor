@@ -6,9 +6,12 @@ import { initAudioOnFirstClick, getAudioContext, webaudioOutput, registerSynthSo
 import { registerSoundfonts } from "@strudel/soundfonts";
 import { transpiler } from "@strudel/transpiler";
 import console_monkey_patch from "../console-monkey-patch";
+import { stranger_tune } from "../tunes";
 
-export function useStrudelEditor(canvasId, editorId) {
+export function useStrudelEditor(canvasRef, editorRef) {
     const [editor, setEditor] = useState(null);
+    const [code, setCode] = useState(stranger_tune); 
+
     const hasRun = useRef(false);
 
     useEffect(() => {
@@ -16,17 +19,20 @@ export function useStrudelEditor(canvasId, editorId) {
         hasRun.current = true;
         console_monkey_patch();
 
-        const canvas = document.getElementById(canvasId);
+        if (!canvasRef.current || !editorRef.current) return;
+
+        const canvas = canvasRef.current;
         canvas.width *= 2;
         canvas.height *= 2;
         const ctx = canvas.getContext("2d");
+
         const drawTime = [-2, 2];
 
         const newEditor = new StrudelMirror({
             defaultOutput: webaudioOutput,
             getTime: () => getAudioContext().currentTime,
             transpiler,
-            root: document.getElementById(editorId),
+            root: editorRef.current,
             drawTime,
             onDraw: (haps, time) => {
                 drawPianoroll({ haps, time, ctx, drawTime, fold: 0 })
@@ -46,9 +52,15 @@ export function useStrudelEditor(canvasId, editorId) {
                 await Promise.all([loadModules, registerSynthSounds(), registerSoundfonts()]);
             },
         });
-
         setEditor(newEditor);
-    }, [canvasId, editorId]);
+    }, [canvasRef, editorRef]);
 
-    return editor;
-}
+    useEffect(() => {
+        if (editor) {
+            editor.setCode(code);
+        }
+    }, [code, editor]);
+
+    return { editor, code, setCode };
+
+};

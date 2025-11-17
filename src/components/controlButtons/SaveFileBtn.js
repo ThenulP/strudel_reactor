@@ -1,13 +1,13 @@
 import ControlButton from "../../componentTemplates/ControlButton";
-import { usePreprocessor } from "../preprocessor/usePreprocessor";
+//import { usePreprocessor } from "../preprocessor/usePreprocessor";
 import { useState } from "react";
 
-const LoadFileBtn = ({ editor }) => {
-    const preprocess = usePreprocessor(editor);
+const SaveFileBtn = ({ code }) => {
+    //const preprocess = usePreprocessor(editor);
     const [procText, setProcText] = useState('');
 
     const downloadTextFile = () => {
-        setProcText(preprocess.procText);
+        setProcText(code);
         const blob = new Blob([procText], { type: "text/plain" });
         const url = URL.createObjectURL(blob);
 
@@ -28,5 +28,5 @@ const LoadFileBtn = ({ editor }) => {
     );
 };
 
-export default LoadFileBtn;
+export default SaveFileBtn;
 

@@ -1,3 +1,3 @@
-export default function PianoRollCanvas() {
-    return <canvas id="roll" style={{ width: "100%", height: "200px" }} />;
+export default function PianoRollCanvas({ref }) {
+    return <canvas id="roll" style={{ width: "100%", height: "200px" }} ref={ref} />;
 }
