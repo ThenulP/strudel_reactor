@@ -47,7 +47,7 @@ export function usePreprocessor(code, setCode, editor) {
 
         const regex = new RegExp(`^(_?${variable})(\\s*:?)`, "m");
 
-        const newText = code.replace(regex, (_, name, colon) => {
+        const newText = code.replace(regex, (_, _unused, colon) => {
             return `${symbol}${variable}${colon}`;
         });
 

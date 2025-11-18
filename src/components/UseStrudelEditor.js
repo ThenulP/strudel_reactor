@@ -11,6 +11,7 @@ import { stranger_tune } from "../tunes";
 export function useStrudelEditor(canvasRef, editorRef) {
     const [editor, setEditor] = useState(null);
     const [code, setCode] = useState(stranger_tune); 
+    const [analyser, setAnalyser] = useState(null);
 
     const hasRun = useRef(false);
 
@@ -29,17 +30,16 @@ export function useStrudelEditor(canvasRef, editorRef) {
         const drawTime = [-2, 2];
 
         const newEditor = new StrudelMirror({
-            defaultOutput: webaudioOutput,
-            getTime: () => getAudioContext().currentTime,
-            transpiler,
             root: editorRef.current,
+            transpiler,
             drawTime,
+            getTime: () => getAudioContext().currentTime,
+
             onDraw: (haps, time) => {
-                drawPianoroll({ haps, time, ctx, drawTime, fold: 0 })
+                drawPianoroll({ haps, time, ctx, drawTime, fold: 0 });
                 ctx.textAlign = "left";
-
-
             },
+
             prebake: async () => {
                 initAudioOnFirstClick();
                 const loadModules = evalScope(
@@ -56,11 +56,40 @@ export function useStrudelEditor(canvasRef, editorRef) {
     }, [canvasRef, editorRef]);
 
     useEffect(() => {
+        if (!editor) return;
+
+        const audioCtx = getAudioContext();
+
+        const analyserNode = audioCtx.createAnalyser();
+        analyserNode.fftSize = 2048;
+
+        const gainNode = audioCtx.createGain();
+
+        gainNode.connect(analyserNode);
+        analyserNode.connect(audioCtx.destination);
+
+        editor.outputNode = gainNode;
+
+        setAnalyser(analyserNode);
+    }, [editor]);
+
+
+    useEffect(() => {
         if (editor) {
             editor.setCode(code);
         }
     }, [code, editor]);
 
-    return { editor, code, setCode };
+
+    function getWaveform() {
+        if (!analyser) return [];
+        const dataArray = new Float32Array(analyser.fftSize);
+        analyser.getFloatTimeDomainData(dataArray);
+        return Array.from(dataArray);
+
+    }
+
+
+    return { editor, code, setCode, getWaveform };
 
 };
