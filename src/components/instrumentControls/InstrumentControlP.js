@@ -1,15 +1,16 @@
 
 import {useRenderer } from "./useRenderer"
-import TransformationDropdown from "./TransformationDropdown";
 
-export default function InstrControlP({ instr, updInstr }) {
+export default function InstrControlP({ instr, updInstr, muteInstr }) {
 
-    const renderInstruments = useRenderer(instr, updInstr);
+    const renderInstruments = useRenderer(instr, updInstr, muteInstr);
 
 
     return (
         <div className="card" id="instrControlP">
-
+            <div>
+                <h2>Instrument Controls</h2>
+            </div>
             <div>
                 {renderInstruments()}
             </div>     

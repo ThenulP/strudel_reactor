@@ -5,5 +5,7 @@
   "postgain",
   "gain",
   "adsr",
-  "speed"
+  "speed",
+  "bank",
+  "sound"
 ]

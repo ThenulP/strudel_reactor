@@ -1,26 +1,31 @@
 import  transformers  from "./transformers.json"
-import TransformerBtn from "../../componentTemplates/TransformerBtn.js";
-export default function Dropdown() {
+
+export default function TransformationDropdown() {
 
 
     return (
-        <nav className="navbar navbar-expand-lg">
-            <div className="container-fluid">
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarContent"
-                >
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-
-                <div className="collapse navbar-collapse" id="navbarContent">
-                    {transformers.map((trans, idx) => {
-                        return <TransformerBtn key={idx} id={idx} name={trans} />;
-                    })}
-                </div>
-            </div>
-        </nav>
+        <div className="dropdown">
+            <button
+                className="btn btn-sm btn-outline-primary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+            >
+                Add Transformers
+            </button>
+            <ul className="dropdown-menu">
+                {transformers.map((trans, idx) => (
+                    <li key={idx}>
+                        <button
+                            className="dropdown-item"
+                            type="button"
+                            onClick={() => console.log('Selected:', trans)}
+                        >
+                            {trans}
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 }

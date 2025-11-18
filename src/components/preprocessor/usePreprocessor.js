@@ -1,7 +1,7 @@
 
 import { useMemo, useCallback } from "react";
 
-export function usePreprocessor(code, setCode) {
+export function usePreprocessor(code, setCode, editor) {
     const instruments = useMemo(() => {
         if (!code) return [];
 
@@ -40,6 +40,22 @@ export function usePreprocessor(code, setCode) {
         setCode(updated);
     }, [code, setCode]);
 
-    return { instruments, updateInstrument };
+    const muteInstrument = useCallback((instrName, checked ) => {
+
+        const symbol = checked ? "" : "_";
+        const variable = instrName;
+
+        const regex = new RegExp(`^(_?${variable})(\\s*:?)`, "m");
+
+        const newText = code.replace(regex, (_, name, colon) => {
+            return `${symbol}${variable}${colon}`;
+        });
+
+
+        setCode(newText);
+        editor?.evaluate();    
+    },[editor, code, setCode])
+
+    return { instruments, updateInstrument, muteInstrument };
 
 }
