@@ -23,17 +23,16 @@ export default function StrudelDemo() {
     useEffect(() => {
         let raf;
 
-        function update() {
-            const data = getWaveform(); 
-            if (data.length > 0) setWave(data);
-
+        const update = () => {
+            const data = getWaveform();
+            if (data && data.length > 0) setWave(data);
             raf = requestAnimationFrame(update);
-        }
+        };
 
-        if (editor) update(); 
+        if (editor) update();
 
         return () => cancelAnimationFrame(raf);
-    }, [editor, getWaveform]);
+    }, [editor]);
 
     return (
         <div>
@@ -45,7 +44,9 @@ export default function StrudelDemo() {
                     </div>
                     <div className="col-md-4">
                         <ControlButtons editor={editor} code={code} setCode={setCode} />
-                        <Waveform data={wave} />
+                        <div style={{ width: "100%", height: "200px" }}>
+                            <Waveform waveform={wave} />
+                        </div>
                     </div>
                 </div>
                 <div className="row">

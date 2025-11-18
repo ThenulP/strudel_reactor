@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { useWaveform } from "./useWaveform";
 import { StrudelMirror } from "@strudel/codemirror";
 import { evalScope } from "@strudel/core";
 import { drawPianoroll } from "@strudel/draw";
@@ -11,9 +12,10 @@ import { stranger_tune } from "../tunes";
 export function useStrudelEditor(canvasRef, editorRef) {
     const [editor, setEditor] = useState(null);
     const [code, setCode] = useState(stranger_tune); 
-    const [analyser, setAnalyser] = useState(null);
-
+    const [analyserNode, setAnalyserNode] = useState(null);
     const hasRun = useRef(false);
+
+    const { analyser, waveform } = useWaveform(audioCtx, gainNode);
 
     useEffect(() => {
         if (hasRun.current) return;
@@ -26,6 +28,7 @@ export function useStrudelEditor(canvasRef, editorRef) {
         canvas.width *= 2;
         canvas.height *= 2;
         const ctx = canvas.getContext("2d");
+        ctx.scale(2, 2);
 
         const drawTime = [-2, 2];
 
@@ -59,16 +62,14 @@ export function useStrudelEditor(canvasRef, editorRef) {
         if (!editor) return;
 
         const audioCtx = getAudioContext();
-
+        const gainNode = audioCtx.createGain();
         const analyserNode = audioCtx.createAnalyser();
         analyserNode.fftSize = 2048;
-
-        const gainNode = audioCtx.createGain();
 
         gainNode.connect(analyserNode);
         analyserNode.connect(audioCtx.destination);
 
-        editor.outputNode = gainNode;
+        editor.defaultOutput = gainNode;
 
         setAnalyser(analyserNode);
     }, [editor]);
@@ -81,14 +82,12 @@ export function useStrudelEditor(canvasRef, editorRef) {
     }, [code, editor]);
 
 
-    function getWaveform() {
+    const getWaveform = useCallback(() => {
         if (!analyser) return [];
         const dataArray = new Float32Array(analyser.fftSize);
         analyser.getFloatTimeDomainData(dataArray);
         return Array.from(dataArray);
-
-    }
-
+    }, [analyser]);
 
     return { editor, code, setCode, getWaveform };
 
